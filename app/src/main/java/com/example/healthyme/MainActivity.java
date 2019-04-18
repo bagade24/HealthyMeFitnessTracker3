@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity  implements ConnectionCallba
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(getApplicationContext(),bluetooth.class);
+                Intent intent= new Intent(getApplicationContext(),bluetoothcon.class);
                 startActivity(intent);
             }
         });

@@ -47,7 +47,7 @@ public class bluetooth extends AppCompatActivity {
     private static final int REQUEST_BLUETOOTH = 1001;
     BluetoothAdapter bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
     Set<BluetoothDevice>bluetoothDevice;
-    BluetoothDevice bthdevice_search;
+    //BluetoothDevice bthdevice_search;
     String[] strings;
     //ListView listView;
     int index;
@@ -83,7 +83,7 @@ public class bluetooth extends AppCompatActivity {
                     t1.setText("Bth there");
                 }
                // bthpaired();
-                bthdiscovery();
+              //  bthdiscovery();
             }
         });
 
@@ -99,6 +99,8 @@ public class bluetooth extends AppCompatActivity {
                 {
                     t1.setText("Bth there");
                 }
+
+
                  bthpaired();
              //   bthdiscovery();
             }
@@ -106,31 +108,9 @@ public class bluetooth extends AppCompatActivity {
 
     }
 
-    public void bthdiscovery() {
-        if(bluetoothAdapter.startDiscovery()) {
-            t1.setText("bth started discovering");
-            IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            registerReceiver(broadcastReceiver,intentFilter);
-            arrayAdapter_search=new ArrayAdapter<String>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,stringArrayList);
-            listView1.setAdapter(arrayAdapter_search);
-        }
-
-    }
-
-    BroadcastReceiver broadcastReceiver=new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-          String action=intent.getAction();
-          if(bthdevice_search.ACTION_FOUND equals(action))
-            {
-            BluetoothDevice device=intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            stringArrayList.add(device.getName());
-            arrayAdapter_search.notifyDataSetChanged();
-            }
-        }
-    }
 
     public void bthpaired() {
+
         bluetoothDevice=bluetoothAdapter.getBondedDevices();
         strings= new String[bluetoothDevice.size()];
         index=0;
