@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -64,6 +65,15 @@ public class bluetoothcon extends AppCompatActivity {
             }
         });
 
+        listView_display.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String s = listView_display.getItemAtPosition(i).toString();
+
+                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     public void discover(View view) {
@@ -99,9 +109,11 @@ public class bluetoothcon extends AppCompatActivity {
                 bth_search_arrlist.add(device);
                 mListadapter= new DeviceList(context,R.layout.device_adapter_view,bth_search_arrlist);
                 listView_display.setAdapter(mListadapter);
+
             }
         }
     };
+
 
     public void pair(View view)
     {
@@ -138,6 +150,11 @@ public class bluetoothcon extends AppCompatActivity {
         }
         }
     }
+
+
+
+
+
 
 
 }

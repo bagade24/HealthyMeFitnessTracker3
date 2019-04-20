@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.se.omapi.SEService;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,20 +49,29 @@ public class MainActivity extends AppCompatActivity  implements ConnectionCallba
     private GoogleApiClient mApiClient;
     TextView t1,t2;
     //private static final int REQUEST_BLUETOOTH = 1001;
-    Button b1;
+    Button b1,btnstep;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         t1=findViewById(R.id.disp);
         t2=findViewById(R.id.textView2);
         b1=findViewById(R.id.button1);
+        btnstep=findViewById(R.id.btn_stepcounter);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent= new Intent(getApplicationContext(),bluetoothcon.class);
                 startActivity(intent);
+            }
+        });
+
+        btnstep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"Again",Toast.LENGTH_LONG).show();
+                onConnected(savedInstanceState);
             }
         });
 
