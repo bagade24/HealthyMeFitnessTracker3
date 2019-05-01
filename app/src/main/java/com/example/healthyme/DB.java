@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class DB extends SQLiteOpenHelper {
-    public static String MyDB = "fiyness.db";
+    public static String MyDB = "fitness.db";
     public static String MyTable = "usertable";
-    public static String COL1 = "date",COL2 = "steps",COL3 = "goal";
+    public static String COL1 = "currentdate",COL2 = "steps",COL3 = "target";
 
     public DB(Context context) {
         super(context, MyDB ,null, 1);

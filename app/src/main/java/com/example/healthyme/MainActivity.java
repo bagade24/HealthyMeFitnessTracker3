@@ -13,6 +13,7 @@ import android.se.omapi.SEService;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity  implements ConnectionCallba
     private static final String AUTH_PENDING = "auth_state_pending";
     private boolean authInProgress = false;
     private GoogleApiClient mApiClient;
-    TextView t1,t2,trgt;
+    TextView t1,t2;
+    EditText trgt;
     //private static final int REQUEST_BLUETOOTH = 1001;
     Button b1,btnstep,btndb;
     Value stp;
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity  implements ConnectionCallba
         btnstep=findViewById(R.id.btn_stepcounter);
         btndb=findViewById(R.id.db);
         trgt=findViewById(R.id.targettxt);
-        target=Integer.parseInt(trgt.getText().toString());
+
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -228,10 +230,11 @@ public class MainActivity extends AppCompatActivity  implements ConnectionCallba
 
     public void dbentry(View view)
     {
-        DB db=new DB(getApplicationContext());
+        DB db=new DB(this);
         DateFormat dateFormat=new SimpleDateFormat("dd-mm-yyy");
         Date date=new Date();
-        Boolean status=db.InsertData(dateFormat.format(date),Integer.parseInt(stp.toString()),target);
+        target=Integer.parseInt(trgt.getText().toString());
+        Boolean status=db.InsertData((dateFormat.format(date).toString()),Integer.parseInt(stp.toString()),target);
         if(status)
         {
             Toast.makeText(this,"INSERTED",Toast.LENGTH_LONG).show();
@@ -246,7 +249,9 @@ public class MainActivity extends AppCompatActivity  implements ConnectionCallba
     {
         DB db=new DB(getApplicationContext());
         Cursor cs=db.DisplayData();
-        Toast.makeText(this,cs.getString(3),Toast.LENGTH_LONG).show();
+        while(cs.moveToNext()) {
+            Toast.makeText(this, cs.getString(1), Toast.LENGTH_LONG).show();
+        }
     }
 
 }
