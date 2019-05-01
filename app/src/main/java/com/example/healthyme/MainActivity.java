@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.se.omapi.SEService;
 import android.util.Log;
@@ -38,6 +39,9 @@ import com.google.android.gms.fitness.request.StartBleScanRequest;
 import com.google.android.gms.fitness.result.BleDevicesResult;
 import com.google.android.gms.fitness.result.DataSourcesResult;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static com.google.android.gms.common.api.GoogleApiClient.*;
@@ -47,9 +51,11 @@ public class MainActivity extends AppCompatActivity  implements ConnectionCallba
     private static final String AUTH_PENDING = "auth_state_pending";
     private boolean authInProgress = false;
     private GoogleApiClient mApiClient;
-    TextView t1,t2;
+    TextView t1,t2,trgt;
     //private static final int REQUEST_BLUETOOTH = 1001;
-    Button b1,btnstep;
+    Button b1,btnstep,btndb;
+    Value stp;
+    int target;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +65,9 @@ public class MainActivity extends AppCompatActivity  implements ConnectionCallba
         t2=findViewById(R.id.textView2);
         b1=findViewById(R.id.button1);
         btnstep=findViewById(R.id.btn_stepcounter);
+        btndb=findViewById(R.id.db);
+        trgt=findViewById(R.id.targettxt);
+        target=Integer.parseInt(trgt.getText().toString());
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,6 +189,7 @@ public class MainActivity extends AppCompatActivity  implements ConnectionCallba
     public void onDataPoint(DataPoint dataPoint) {
         for( final Field field : dataPoint.getDataType().getFields() ) {
             final Value value = dataPoint.getValue( field );
+            stp=value;
             t2.setText(value.toString());
             runOnUiThread(new Runnable() {
                 @Override
@@ -216,6 +226,27 @@ public class MainActivity extends AppCompatActivity  implements ConnectionCallba
         outState.putBoolean(AUTH_PENDING, authInProgress);
     }
 
+    public void dbentry(View view)
+    {
+        DB db=new DB(getApplicationContext());
+        DateFormat dateFormat=new SimpleDateFormat("dd-mm-yyy");
+        Date date=new Date();
+        Boolean status=db.InsertData(dateFormat.format(date),Integer.parseInt(stp.toString()),target);
+        if(status)
+        {
+            Toast.makeText(this,"INSERTED",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this,"NOT INSERTED",Toast.LENGTH_LONG).show();
+        }
+    }
 
+    public void dbdisplay(View view)
+    {
+        DB db=new DB(getApplicationContext());
+        Cursor cs=db.DisplayData();
+        Toast.makeText(this,cs.getString(3),Toast.LENGTH_LONG).show();
+    }
 
 }
